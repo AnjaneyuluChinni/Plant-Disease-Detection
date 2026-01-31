@@ -1,6 +1,19 @@
-# 🌿 Plant Disease Detection - End-to-End Project
+# 🌿 Plant Disease Detection using YOLO & Flask
 
+An end-to-end **Plant Disease Detection web application** built using **YOLO (Ultralytics)** for object detection and **Flask** for backend APIs.  
+The system allows users to upload plant leaf images and get disease predictions with confidence scores and annotated results.
 A production-ready AI system for detecting plant diseases using YOLOv5 object detection and a Flask web backend.
+
+---
+
+## 🚀 Live Demo (Deployed on Render)
+
+🔗 **Application URL:**  
+👉 https://plant-disease-detection-1-calg.onrender.com
+
+> ⚠️ Note: The app may take a few seconds to load initially due to cold start on Render (free tier).
+
+---
 
 ## 📋 Table of Contents
 
