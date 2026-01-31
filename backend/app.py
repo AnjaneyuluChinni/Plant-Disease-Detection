@@ -70,6 +70,11 @@ def load_model(model_path="models/best.pt", classes_path="datasets/yolo_format/c
         
         model.conf = 0.25  # Confidence threshold
         model.iou = 0.45   # NMS IoU threshold
+        # Force CPU on Render (no GPU available)
+        try:
+            model.to("cpu")
+        except Exception as e:
+            print(f"⚠ Failed to force CPU mode: {str(e)}")
         
         # Load class names if available
         if Path(classes_path).exists():
@@ -114,7 +119,7 @@ def process_image(image_path):
             return None, None, "Could not read image"
         
         # Inference using ultralytics
-        results = model(image_path, conf=0.25, verbose=False)
+        results = model(image_path, conf=0.25, verbose=False, device="cpu")
         
         # Parse results
         detections = []
