@@ -36,19 +36,6 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 model = None
 class_names = {}
 
-# Load model at import time (Gunicorn-compatible)
-print("=" * 70)
-print("PLANT DISEASE DETECTION BACKEND (Gunicorn mode)")
-print("=" * 70)
-print("Loading model at startup...")
-_success, _message = load_model()
-if _success:
-    print(f"✓ {_message}")
-    print(f"✓ Classes loaded: {len(class_names)}")
-else:
-    print(f"✗ {_message}")
-    raise RuntimeError("Failed to load YOLO model")
-
 def load_model(model_path="models/best.pt", classes_path="datasets/yolo_format/class_mapping.json"):
     """
     Load YOLOv5 model and class names using ultralytics
@@ -109,6 +96,20 @@ def load_model(model_path="models/best.pt", classes_path="datasets/yolo_format/c
     except Exception as e:
         print(f"✗ Critical error loading model: {str(e)}")
         return False, f"Failed to load model: {str(e)}"
+
+
+# Load model at import time (Gunicorn-compatible)
+print("=" * 70)
+print("PLANT DISEASE DETECTION BACKEND (Gunicorn mode)")
+print("=" * 70)
+print("Loading model at startup...")
+_success, _message = load_model()
+if _success:
+    print(f"✓ {_message}")
+    print(f"✓ Classes loaded: {len(class_names)}")
+else:
+    print(f"✗ {_message}")
+    raise RuntimeError("Failed to load YOLO model")
 
 
 def allowed_file(filename):
