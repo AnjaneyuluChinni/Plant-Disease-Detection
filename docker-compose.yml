@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: plant-disease-detector
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=False
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./models:/app/models
+      - ./uploads:/app/uploads
+      - ./datasets:/app/datasets
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# Usage:
+# docker-compose up -d        (run in background)
+# docker-compose down         (stop containers)
+# docker-compose logs -f      (view logs)
+# docker-compose build        (rebuild image)

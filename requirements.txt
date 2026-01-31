@@ -1,0 +1,31 @@
+# Plant Disease Detection Requirements
+# Created for YOLOv5 + Flask backend
+
+# Core ML/Computer Vision
+torch==2.0.1
+torchvision==0.15.2
+opencv-python==4.8.0.76
+numpy==1.24.3
+Pillow==10.0.0
+
+# YOLOv5
+yolov5==7.0.13
+ultralytics==8.0.150
+
+# Backend
+Flask==3.0.0
+Flask-CORS==4.0.0
+python-dotenv==1.0.0
+
+# Utilities
+requests==2.31.0
+tqdm==4.66.1
+matplotlib==3.7.2
+scipy==1.11.2
+
+# Deployment
+gunicorn==21.2.0
+python-multipart==0.0.6
+
+# Optional: For GPU support (uncomment if using CUDA)
+# torch-cuda==11.8  # Install CUDA if available

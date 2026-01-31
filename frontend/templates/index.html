@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Detection - AI Powered</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-subtitle">
+                <span class="leaf-icon">🌿</span>
+                <span class="header-label">AI-POWERED AGRICULTURE</span>
+            </div>
+            <div class="header-content">
+                <h1>Plant Disease <span class="detection-text">Detection</span></h1>
+                <p class="subtitle">Upload a photo or use your camera to instantly identify plant diseases and get treatment recommendations.</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Mode Selection -->
+            <section class="mode-selector">
+                <button class="mode-btn active" id="upload-mode-btn" onclick="switchMode('upload')">
+                    📤 Upload Image
+                </button>
+                <button class="mode-btn" id="camera-mode-btn" onclick="switchMode('camera')">
+                    📷 Live Camera
+                </button>
+            </section>
+
+            <!-- Upload Mode -->
+            <section class="mode-section active" id="upload-section">
+                <div class="upload-area" id="dropZone" style="cursor: pointer;">
+                    <div class="upload-icon">📁</div>
+                    <h2>Upload Image</h2>
+                    <p class="upload-subtitle">Drag & drop a leaf image here, or click<br>to select from your device</p>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    <p class="file-formats">Supports JPG, PNG, WEBP</p>
+                </div>
+                <button class="btn btn-success" id="analyzeBtn" onclick="analyzeImage()" style="display: none;">
+                    Analyze Plant
+                </button>
+            </section>
+
+            <!-- Camera Mode -->
+            <section class="mode-section" id="camera-section">
+                <div class="camera-container">
+                    <div class="camera-placeholder" id="cameraPlaceholder">
+                        <p>📷 Click "Start Camera" to begin</p>
+                    </div>
+                    <video id="cameraVideo" autoplay style="display: none; max-width: 100%;"></video>
+                </div>
+                <div class="camera-controls">
+                    <button class="btn btn-primary" id="startCameraBtn" onclick="startCamera()">
+                        Start Camera
+                    </button>
+                    <button class="btn btn-secondary" id="stopCameraBtn" onclick="stopCamera()" style="display: none;">
+                        Stop Camera
+                    </button>
+                    <button class="btn btn-success" id="captureBtn" onclick="captureFrame()" style="display: none;">
+                        📸 Capture & Analyze
+                    </button>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing image...</p>
+            </div>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-container">
+                    <div class="results-image">
+                        <h3>Detected Image</h3>
+                        <img id="resultImage" src="" alt="Detection Result">
+                    </div>
+
+                    <div class="results-data">
+                        <h3>Detection Results</h3>
+                        <div id="detectionResults" class="detection-results">
+                            <!-- Detections will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-footer">
+                    <button class="btn btn-primary" onclick="resetApp()">
+                        Analyze Another Image
+                    </button>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <div class="error-message" id="errorMessage" style="display: none;"></div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Plant Disease Detection v1.0 | Powered by YOLOv5 & Flask</p>
+            <p class="footer-small">Model: CPU-Optimized | Inference Latency: Real-time</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

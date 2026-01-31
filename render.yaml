@@ -1,0 +1,18 @@
+services:
+  web:
+    build: .
+    start: gunicorn --workers 1 --threads 2 --worker-class gthread --bind 0.0.0.0:$PORT backend.app:app
+    healthcheck:
+      test: curl --fail http://localhost:$PORT/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    envs:
+      PORT: 5000
+    static_publishes:
+      - type: path_prefix
+        source: /static
+        destination: /static
+      - type: path_prefix
+        source: /templates
+        destination: /templates
