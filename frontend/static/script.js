@@ -61,29 +61,33 @@ function setupDragDrop() {
     
     console.log('Setting up drag-drop listeners');
     
+    // Remove old listeners by cloning and replacing
+    const newDropZone = dropZone.cloneNode(true);
+    dropZone.parentNode.replaceChild(newDropZone, dropZone);
+    
     // Add click listener
-    dropZone.onclick = function(e) {
+    newDropZone.onclick = function(e) {
         console.log('Drop zone clicked');
         document.getElementById('fileInput').click();
     };
     
     // Add drag-drop listeners
-    dropZone.ondragover = function(e) {
+    newDropZone.ondragover = function(e) {
         e.preventDefault();
         e.stopPropagation();
-        dropZone.classList.add('dragover');
+        newDropZone.classList.add('dragover');
     };
     
-    dropZone.ondragleave = function(e) {
+    newDropZone.ondragleave = function(e) {
         e.preventDefault();
         e.stopPropagation();
-        dropZone.classList.remove('dragover');
+        newDropZone.classList.remove('dragover');
     };
     
-    dropZone.ondrop = function(e) {
+    newDropZone.ondrop = function(e) {
         e.preventDefault();
         e.stopPropagation();
-        dropZone.classList.remove('dragover');
+        newDropZone.classList.remove('dragover');
         
         const files = e.dataTransfer.files;
         if (files.length > 0) {
@@ -121,7 +125,13 @@ function handleDrop(e) {
 }
 
 function setupFileInput() {
-    document.getElementById('fileInput').addEventListener('change', (e) => {
+    const fileInput = document.getElementById('fileInput');
+    // Remove old listener to prevent duplicates by cloning
+    const newFileInput = fileInput.cloneNode(true);
+    fileInput.parentNode.replaceChild(newFileInput, fileInput);
+    
+    // Add new listener
+    newFileInput.addEventListener('change', (e) => {
         if (e.target.files.length > 0) {
             handleFileSelect(e.target.files[0]);
         }
@@ -340,43 +350,38 @@ function showError(message) {
 function resetApp() {
     console.log('Resetting app...');
     
-    // Clear file input
-    document.getElementById('fileInput').value = '';
-    window.selectedFile = null;
+    // Keep results section visible so user can see the previous image
+    // Just clear the detection results list
+    const detectionResults = document.getElementById('detectionResults');
+    if (detectionResults) {
+        detectionResults.innerHTML = '<p style="text-align:center; color:#999;">Ready for new analysis...</p>';
+    }
     
-    // Hide sections
-    document.getElementById('resultsSection').style.display = 'none';
-    document.getElementById('errorMessage').style.display = 'none';
-    document.getElementById('loadingSpinner').style.display = 'none';
+    // Clear file input for new selection
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) {
+        fileInput.value = '';
+        // Reset the input type to clear cached file
+        fileInput.type = '';
+        fileInput.type = 'file';
+    }
     
-    // Completely remove and recreate the dropZone to clear all event listeners
-    const uploadSection = document.getElementById('upload-section');
-    const oldDropZone = document.getElementById('dropZone');
-    
-    // Create new dropZone element
-    const newDropZone = document.createElement('div');
-    newDropZone.id = 'dropZone';
-    newDropZone.className = 'upload-area';
-    newDropZone.style.cursor = 'pointer';
-    newDropZone.innerHTML = `
-        <div class="upload-icon">📁</div>
-        <h2>Upload Image</h2>
-        <p class="upload-subtitle">Drag & drop a leaf image here, or click<br>to select from your device</p>
-        <p class="file-formats">Supports JPG, PNG, WEBP</p>
-    `;
-    
-    // Replace the old dropZone with the new one
-    oldDropZone.parentNode.replaceChild(newDropZone, oldDropZone);
-    
-    // Hide analyze button
-    document.getElementById('analyzeBtn').style.display = 'none';
-    
-    // Setup fresh event listeners
+    // Re-setup event listeners for fresh state
     setupDragDrop();
     setupFileInput();
     
-    // Switch to upload mode
+    // Hide loading and error messages
+    document.getElementById('errorMessage').style.display = 'none';
+    document.getElementById('loadingSpinner').style.display = 'none';
+    
+    // Show the upload interface again
     switchMode('upload');
     
-    console.log('App reset complete');
+    // Scroll to upload section so user can see and use it
+    const uploadSection = document.getElementById('upload-section');
+    if (uploadSection) {
+        uploadSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    console.log('App reset complete - upload interface ready');
 }

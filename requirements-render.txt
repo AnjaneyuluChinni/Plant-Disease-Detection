@@ -1,0 +1,31 @@
+# Plant Disease Detection Requirements - Render Deployment (Python 3.13 Compatible)
+# Updated for maximum Python 3.13 compatibility
+
+# Core ML/Computer Vision - Updated for Python 3.13
+torch>=2.1.0,<3.0
+torchvision>=0.16.0,<3.0
+opencv-python>=4.9.0,<5.0
+numpy>=1.26.0,<2.0
+Pillow>=10.0.0,<11.0
+
+# YOLOv5 / Ultralytics - Latest compatible versions
+ultralytics>=8.2.0,<9.0
+yolov5>=7.0.13,<8.0
+
+# Backend
+Flask>=3.0.0,<4.0
+Flask-CORS>=4.0.0,<5.0
+python-dotenv>=1.0.0,<2.0
+
+# Utilities
+requests>=2.31.0,<3.0
+tqdm>=4.66.1,<5.0
+matplotlib>=3.8.0,<4.0
+scipy>=1.11.0,<2.0
+
+# Deployment
+gunicorn>=21.2.0,<22.0
+python-multipart>=0.0.6,<1.0
+
+# Additional for stability
+Werkzeug>=3.0.0,<4.0
