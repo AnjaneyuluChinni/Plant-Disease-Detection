@@ -36,6 +36,19 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 model = None
 class_names = {}
 
+# Load model at import time (Gunicorn-compatible)
+print("=" * 70)
+print("PLANT DISEASE DETECTION BACKEND (Gunicorn mode)")
+print("=" * 70)
+print("Loading model at startup...")
+_success, _message = load_model()
+if _success:
+    print(f"✓ {_message}")
+    print(f"✓ Classes loaded: {len(class_names)}")
+else:
+    print(f"✗ {_message}")
+    raise RuntimeError("Failed to load YOLO model")
+
 def load_model(model_path="models/best.pt", classes_path="datasets/yolo_format/class_mapping.json"):
     """
     Load YOLOv5 model and class names using ultralytics
@@ -375,43 +388,3 @@ def server_error(error):
     return jsonify({'error': 'Internal server error'}), 500
 
 
-def main():
-    """Initialize and run Flask app"""
-    print("=" * 70)
-    print("PLANT DISEASE DETECTION BACKEND")
-    print("=" * 70)
-    
-    # Try to load model
-    print("\nLoading model...")
-    success, message = load_model()
-    
-    if success:
-        print(f"✓ {message}")
-        print(f"✓ Classes loaded: {len(class_names)}")
-    else:
-        print(f"✗ {message}")
-        print("✗ CRITICAL: Unable to load any model")
-        print("  Exiting...")
-        return
-    
-    print("\n" + "=" * 70)
-    print("Starting Flask server at http://localhost:5000")
-    print("=" * 70)
-    print("\nEndpoints:")
-    print("  GET  / (main UI)")
-    print("  GET  /health (health check)")
-    print("  POST /upload (upload image)")
-    print("  POST /predict (get predictions)")
-    print("  GET  /webcam-feed (live webcam - local only)")
-    
-    # Run app
-    app.run(
-        host='0.0.0.0',
-        port=5000,
-        debug=False,
-        threaded=True
-    )
-
-
-if __name__ == '__main__':
-    main()
